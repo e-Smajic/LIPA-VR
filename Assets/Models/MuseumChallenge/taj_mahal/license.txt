@@ -1,0 +1,11 @@
+Model Information:
+* title:	TAJ MAHAL
+* source:	https://sketchfab.com/3d-models/taj-mahal-c8eb2e89098746898b94f0b556ecdefe
+* author:	THE 3D GUY (https://sketchfab.com/mishrau60)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "TAJ MAHAL" (https://sketchfab.com/3d-models/taj-mahal-c8eb2e89098746898b94f0b556ecdefe) by THE 3D GUY (https://sketchfab.com/mishrau60) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

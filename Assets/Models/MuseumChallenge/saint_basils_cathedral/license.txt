@@ -1,0 +1,11 @@
+Model Information:
+* title:	Saint Basil's Cathedral
+* source:	https://sketchfab.com/3d-models/saint-basils-cathedral-a0b09745ecfe4cfea590eefcaac1e457
+* author:	Polskaball (https://sketchfab.com/augustgamer1808)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Saint Basil's Cathedral" (https://sketchfab.com/3d-models/saint-basils-cathedral-a0b09745ecfe4cfea590eefcaac1e457) by Polskaball (https://sketchfab.com/augustgamer1808) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
