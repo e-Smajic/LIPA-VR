@@ -1,8 +1,9 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Platform : MonoBehaviour
 {
-    private Flag choice = null;
+    private List<Flag> choices = new List<Flag>();
     private Item item = null;
 
     public void OnCollisionEnter(Collision other)
@@ -11,14 +12,31 @@ public class Platform : MonoBehaviour
 
         if (current)
         {
-            choice = current;
-            Debug.Log(choice.country);
+            choices.Add(current);
+            Debug.Log(choices.Count);
+            Debug.Log(current.country);
             Debug.Log(item.country);
-            if (choice.country.Equals(item.country))
-                Debug.Log("Correct");
-            else
-                Debug.Log("Incorrect");
         }
+    }
+
+    public void OnCollisionExit(Collision other)
+    {
+        Flag current = other.gameObject.GetComponent<Flag>();
+
+        if (current)
+        {
+            choices.Remove(current);
+            Debug.Log(choices.Count);
+            Debug.Log(current.country);
+            Debug.Log(item.country);
+        }
+    }
+
+    public bool IsPlatformCorrect()
+    {
+        if (choices.Count == 1 && choices[0].country.Equals(item.country))
+            return true;
+        return false;
     }
 
     public void SetItem(Item item)

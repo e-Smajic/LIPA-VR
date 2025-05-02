@@ -39,11 +39,11 @@ public class MainScript : MonoBehaviour
     };
     private string[] sweets =
     {
-        "Schokolade", "Gummibärchen", "Kekse", "Eis"
+        "Schokolade", "Gummibärchen", "Kekse"
     };
     private string[] cakes = 
     {
-        "Schokoladenkuchen", "Vanillekuchen", "Apfelkuchen"
+        "Schokoladenkuchen", "Vanillekuchen", "Obstkuchen"
     };
 
     // Tasks:

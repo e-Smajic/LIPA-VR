@@ -58,6 +58,14 @@ public class Main : MonoBehaviour
         }
     }
 
+    public void CheckResults()
+    {
+        foreach (Platform p in platforms)
+        {
+            Debug.Log("Platform - " + p.IsPlatformCorrect().ToString());
+        }
+    }
+
     void Start()
     {
         LoadItems();
