@@ -8,7 +8,9 @@ public class EllaTalkTrigger : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
+        {
             mainScript.StartEllaTalk();
             Destroy(gameObject);
+        }   
     }
 }

@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 public class MainScript : MonoBehaviour
 {
@@ -17,6 +18,11 @@ public class MainScript : MonoBehaviour
     public GameObject locomotion;
     public GameObject vignette;
 
+    // Shopping List:
+    [Header("Shopping list")]
+    public TMP_Text shoppingListText;
+    private ShoppingList shoppingList = new ShoppingList();
+
     // Ella Lines:
     private string[] ellaLines = 
     {
@@ -28,24 +34,6 @@ public class MainScript : MonoBehaviour
     };
     private int currentLine = 0;
 
-    // Snacks:
-    private string[] drinks = 
-    {
-        "Cola", "Orangensaft", "Apfelsaft", "Traubensaft", "Erdbeersaft"
-    };
-    private string[] snacks =
-    {
-        "gesalzene Chips", "Paprikachips", "Popcorn", "Bretzeln", "Erdnüsse", "gesaltzene Cracker", "Käsecracker"
-    };
-    private string[] sweets =
-    {
-        "Schokolade", "Gummibärchen", "Kekse"
-    };
-    private string[] cakes = 
-    {
-        "Schokoladenkuchen", "Vanillekuchen", "Obstkuchen"
-    };
-
     // Tasks:
     private bool talkedToElla = false;
     private bool levelFailed = false;
@@ -53,13 +41,25 @@ public class MainScript : MonoBehaviour
 
     void Start()
     {
-        
+        RenderShoppingList();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+    }
+
+    void RenderShoppingList()
+    {
+        shoppingList.GenerateList();
+        
+        string listText = "Einkaufsliste:\n\n";
+        
+        foreach(string item in shoppingList.items)
+            listText += "- " + item + "\n";
+
+        shoppingListText.text = listText;
     }
 
     IEnumerator TypeText(string message, bool yesNoQuestion)
