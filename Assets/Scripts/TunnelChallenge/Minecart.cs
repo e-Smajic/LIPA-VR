@@ -4,12 +4,13 @@ public class Minecart : MonoBehaviour
 {
     // Parameters:
     private bool isMoving = true;
-    private float forwardSpeed = 5f;
-    private float sideSpeed = 5f;
+    public float forwardSpeed = 10f;
+    public float sideSpeed = 10f;
+    public float downSpeed = 0f;
     private float sideBarriers = 20f;
     private Vector3 forwardDirection = Vector3.forward;
     private Vector3 sideDirection = Vector3.right;
-    private Vector3 axis = -Vector3.up;
+    private Vector3 axis = Vector3.down;
 
     // Environment:
     [Header("World")]
@@ -29,6 +30,7 @@ public class Minecart : MonoBehaviour
     {
         world.transform.Translate(forwardDirection.normalized * forwardSpeed * Time.deltaTime);
         world.transform.Translate(sideDirection.normalized * sideSpeed * Time.deltaTime * (lever.angle / 30));
-        Debug.Log(world.transform.position.x);
+        world.transform.Translate(-axis.normalized * downSpeed * Time.deltaTime);
+        //Debug.Log(world.transform.position.x);
     }
 }
