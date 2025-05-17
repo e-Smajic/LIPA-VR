@@ -17,6 +17,21 @@ public class Menu : MonoBehaviour
     public TMP_Text exitText;
     public Image exitIcon;
 
+    [Header("Learn Menu")]
+    public GameObject learnMenuParent;
+
+    [Header("Museum Menu")]
+    public GameObject museumMenuParent;
+
+    [Header("Language Menu")]
+    public GameObject languageMenuParent;
+
+    [Header("Tunnel Menu")]
+    public GameObject tunnelMenuParent;
+
+    [Header("Book")]
+    public Animator bookAnimator;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -29,11 +44,83 @@ public class Menu : MonoBehaviour
         
     }
 
+    public void OpenLearnMenu()
+    {
+        mainMenuParent.SetActive(false);
+        learnMenuParent.SetActive(true);
+    }
+
+    public void CloseLearnMenu()
+    {
+        mainMenuParent.SetActive(true);
+        learnMenuParent.SetActive(false);
+    }
+
+    public void OpenMuseumMenu()
+    {
+        learnMenuParent.SetActive(false);
+        museumMenuParent.SetActive(true);
+    }
+
+    public void CloseMuseumMenu()
+    {
+        learnMenuParent.SetActive(true);
+        museumMenuParent.SetActive(false);
+    }
+
+    public void OpenLanguageMenu()
+    {
+        learnMenuParent.SetActive(false);
+        languageMenuParent.SetActive(true);
+    }
+
+    public void CloseLanguageMenu()
+    {
+        learnMenuParent.SetActive(true);
+        languageMenuParent.SetActive(false);
+    }
+
+    public void OpenTunnelMenu()
+    {
+        learnMenuParent.SetActive(false);
+        tunnelMenuParent.SetActive(true);
+    }
+
+    public void CloseTunnelMenu()
+    {
+        learnMenuParent.SetActive(true);
+        tunnelMenuParent.SetActive(false);
+    }
+
+    public void Quit()
+    {
+        StartCoroutine(FadeAlpha(1f, 0f, 1f));
+        StartCoroutine(WaitForBookClose());
+    }
+
+    IEnumerator QuitApp()
+    {
+        yield return new WaitForSeconds(1f);
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
+
     IEnumerator WaitForBookOpening()
     {
         yield return new WaitForSeconds(1f);
         mainMenuParent.SetActive(true);
         StartCoroutine(FadeAlpha(0f, 1f, 1f));
+    }
+
+    IEnumerator WaitForBookClose()
+    {
+        yield return new WaitForSeconds(1f);
+        mainMenuParent.SetActive(false);
+        bookAnimator.SetBool("CloseApp", true);
+        StartCoroutine(QuitApp());
     }
 
     IEnumerator FadeAlpha(float start, float end, float fadeDuration)
