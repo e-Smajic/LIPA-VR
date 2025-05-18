@@ -1,12 +1,16 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class TunnelTutorial : MonoBehaviour
 {
     [Header("Player")]
     public Minecart minecart;
     public TC_Main mainScript;
+    public NearFarInteractor leftHandNFI;
+    public NearFarInteractor rightHandNFI;
 
     [Header("Ella")]
     public Animator ellaAnimator;
@@ -145,6 +149,8 @@ public class TunnelTutorial : MonoBehaviour
             StopDannyTalk();
             mainScript.UpdateQuestion();
             minecart.isMoving = true;
+            leftHandNFI.enableFarCasting = false;
+            rightHandNFI.enableFarCasting = false;
         }
     }
 
