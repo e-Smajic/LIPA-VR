@@ -3,7 +3,7 @@ using UnityEngine;
 public class Minecart : MonoBehaviour
 {
     // Parameters:
-    private bool isMoving = true;
+    public bool isMoving = false;
     public float forwardSpeed = 10f;
     public float sideSpeed = 10f;
     public float downSpeed = 0f;
@@ -28,9 +28,12 @@ public class Minecart : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        world.transform.Translate(forwardDirection.normalized * forwardSpeed * Time.deltaTime);
-        world.transform.Translate(sideDirection.normalized * sideSpeed * Time.deltaTime * (lever.angle / 30));
-        world.transform.Translate(-axis.normalized * downSpeed * Time.deltaTime);
+        if (isMoving)
+        {
+            world.transform.Translate(forwardDirection.normalized * forwardSpeed * Time.deltaTime);
+            world.transform.Translate(sideDirection.normalized * sideSpeed * Time.deltaTime * (lever.angle / 30));
+            world.transform.Translate(-axis.normalized * downSpeed * Time.deltaTime);
+        }
         //Debug.Log(world.transform.position.x);
     }
 }
