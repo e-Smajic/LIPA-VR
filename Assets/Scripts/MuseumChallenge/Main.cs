@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using TMPro;
 
 public class Main : MonoBehaviour
 {
@@ -14,6 +15,12 @@ public class Main : MonoBehaviour
     [Header("Platforms")]
     public GameObject platformRoot;
     private List<Platform> platforms = new List<Platform>();
+
+    [Header("Timer")]
+    public TMP_Text timerText;
+    private float timer;
+    private bool isCountingTime = false;
+    private bool isLevelStarted = false; 
 
     void LoadItems()
     {
@@ -39,10 +46,30 @@ public class Main : MonoBehaviour
         int count = 0;
         foreach (Transform child in platformRoot.transform)
         {
-            items[count].objects[count].SetActive(true);
             Platform newPlatform = child.gameObject.GetComponent<Platform>();
-            newPlatform.SetItem(items[count++]);
+            newPlatform.SetItem(items[count]);
+            //newPlatform.RemoveHideCapsule();
             platforms.Add(newPlatform);
+
+            //Tablet newTablet = newPlatform.transform.GetComponentInChildren<Tablet>();
+            //newTablet.name.text = "Name: " + items[count].name;
+            //newTablet.description.text = "Description:\n" + items[count].description;
+
+            count++;
+        }
+    }
+
+    void LoadGame()
+    {
+        int count = 0;
+        foreach (Platform platform in platforms)
+        {
+            items[count].objects[count].SetActive(true);
+            platform.RemoveHideCapsule();
+            Tablet newTablet = platform.transform.GetComponentInChildren<Tablet>();
+            newTablet.name.text = "Name: " + items[count].name;
+            newTablet.description.text = "Description:\n" + items[count].description;
+            count++;
         }
     }
 
@@ -63,7 +90,40 @@ public class Main : MonoBehaviour
         foreach (Platform p in platforms)
         {
             Debug.Log("Platform - " + p.IsPlatformCorrect().ToString());
+            if (p.IsPlatformCorrect())
+            {
+                p.AddCorrectCapsule();
+            }
+            else
+            {
+                p.AddIncorrectCapsule();
+            }
         }
+    }
+
+    private bool IsSingleDigit(int number)
+    {
+        return (number / 10) == 0;
+    }
+
+    public void ChangeLevelState()
+    {
+        if (!isLevelStarted)
+        {
+            StartLevel();
+        }
+        else
+        {
+            isCountingTime = false;
+            CheckResults();
+        }
+    }
+
+    public void StartLevel()
+    {
+        isCountingTime = true;
+        isLevelStarted = true;
+        LoadGame();
     }
 
     void Start()
@@ -76,6 +136,23 @@ public class Main : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isCountingTime)
+        {
+            timer += Time.deltaTime; // Add time since last frame
+            int seconds = Mathf.FloorToInt(timer); // Round down to whole seconds
+            int minutes = seconds / 60;
+            if (seconds >= 60)
+            {
+                seconds = seconds % 60;
+            }
+
+            if (minutes >= 59 && seconds >= 59)
+            {
+                isCountingTime = false;
+            }
+
+            timerText.text = (IsSingleDigit(minutes) ? "0" + minutes.ToString() : minutes.ToString())
+                            + ":" + (IsSingleDigit(seconds) ? "0" + seconds.ToString() : seconds.ToString());
+        }
     }
 }
