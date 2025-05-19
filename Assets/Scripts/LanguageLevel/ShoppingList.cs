@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class ShoppingList : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class ShoppingList : MonoBehaviour
     };
 
     public List<string> items = new List<string>();
+    public List<string> boughtItems = new List<string>();
 
     private string TakeRandomElementFromList(List<string> list)
     {
@@ -33,6 +35,11 @@ public class ShoppingList : MonoBehaviour
         string item = list[index];
         list.RemoveAt(index);
         return item;
+    }
+
+    public bool IsEverythingBought()
+    {
+        return new HashSet<string>(items).SetEquals(boughtItems);
     }
 
     private void AddDrinks(List<string> list)

@@ -21,7 +21,7 @@ public class MainScript : MonoBehaviour
     // Shopping List:
     [Header("Shopping list")]
     public TMP_Text shoppingListText;
-    private ShoppingList shoppingList = new ShoppingList();
+    public ShoppingList shoppingList;
 
     // Ella Lines:
     private string[] ellaLines = 

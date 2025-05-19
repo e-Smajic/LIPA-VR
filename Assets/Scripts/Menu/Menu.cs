@@ -7,13 +7,13 @@ public class Menu : MonoBehaviour
 {
     [Header("Main Menu")]
     public GameObject mainMenuParent;
-    public Button learnButton;
+    public GameObject learnButton;
     public TMP_Text learnText;
     public Image learnIcon;
-    public Button settingsButton;
+    public GameObject settingsButton;
     public TMP_Text settingsText;
     public Image settingsIcon;
-    public Button exitButton;
+    public GameObject exitButton;
     public TMP_Text exitText;
     public Image exitIcon;
 

@@ -3955,13 +3955,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainMenuParent: {fileID: 1179123682}
-  learnButton: {fileID: 939236242}
+  learnButton: {fileID: 939236240}
   learnText: {fileID: 1930037187}
   learnIcon: {fileID: 1335215806}
-  settingsButton: {fileID: 1612921392}
+  settingsButton: {fileID: 1612921390}
   settingsText: {fileID: 1794763514}
   settingsIcon: {fileID: 1190639896}
-  exitButton: {fileID: 521531985}
+  exitButton: {fileID: 521531983}
   exitText: {fileID: 875820682}
   exitIcon: {fileID: 1167971733}
   learnMenuParent: {fileID: 431604178}
