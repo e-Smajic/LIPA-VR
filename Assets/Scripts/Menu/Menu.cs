@@ -1,11 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 
 public class Menu : MonoBehaviour
 {
     [Header("Main Menu")]
+    public GameObject logoParent;
+    public Image logoImage;
+    public TMP_Text appName;
+    public TMP_Text signature;
     public GameObject mainMenuParent;
     public GameObject learnButton;
     public TMP_Text learnText;
@@ -29,12 +35,38 @@ public class Menu : MonoBehaviour
     [Header("Tunnel Menu")]
     public GameObject tunnelMenuParent;
 
+    [Header("Settings Menu")]
+    public GameObject settingsMenuParent;
+    public Slider audioSlider;
+    public TMP_Dropdown movementType;
+    public Slider movementSpeed;
+    public TMP_Text movementSpeedValue;
+    public TMP_Dropdown turnType;
+    public TMP_Dropdown turnAngle;
+    public Toggle tunnelingToggle;
+    public Text tunnelingLabel;
+
+    [Header("Loading Menu")]
+    public GameObject loadingParent;
+    public Slider loadingSlider;
+
     [Header("Book")]
     public Animator bookAnimator;
+
+    // Scene Names:
+    private string museumLevel = "MuseumScene";
+    private string languageLevel = "LanguageLevelScene";
+    private string tunnelLevel = "TunnelChallengeScene";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        LoadVolume();
+        LoadMovementType();
+        LoadMovementSpeed();
+        LoadTurnType();
+        LoadTurnAngle();
+        LoadTunneling();
         StartCoroutine(WaitForBookOpening());
     }
 
@@ -92,6 +124,98 @@ public class Menu : MonoBehaviour
         tunnelMenuParent.SetActive(false);
     }
 
+    public void OpenSettingsMenu()
+    {
+        mainMenuParent.SetActive(false);
+        settingsMenuParent.SetActive(true);
+    }
+
+    public void CloseSettingsMenu()
+    {
+        mainMenuParent.SetActive(true);
+        settingsMenuParent.SetActive(false);
+    }
+
+    public void LoadVolume()
+    {
+        audioSlider.value = PlayerPrefs.GetFloat("Volume", 1f);
+    }
+
+    public void UpdateVolume()
+    {
+        float volume = Mathf.Clamp(audioSlider.value, 0, 1);
+        PlayerPrefs.SetFloat("Volume", volume);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadMovementType()
+    {
+        movementType.value = PlayerPrefs.GetInt("MovementType", 0);
+    }
+
+    public void UpdateMovementType()
+    {
+        int selected = movementType.value;
+        PlayerPrefs.SetInt("MovementType", selected);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadMovementSpeed()
+    {
+        float speed = PlayerPrefs.GetFloat("MovementSpeed", 2.5f);
+        speed = Mathf.Round(speed * 10f) / 10f;
+        movementSpeed.value = speed;
+        movementSpeedValue.text = speed.ToString();
+    }
+
+    public void UpdateMovementSpeed()
+    {
+        float speed = Mathf.Clamp(movementSpeed.value, 1, 10);
+        speed = Mathf.Round(speed * 10f) / 10f;
+        PlayerPrefs.SetFloat("MovementSpeed", speed);
+        movementSpeedValue.text = speed.ToString();
+    }
+
+    public void LoadTurnType()
+    {
+        turnType.value = PlayerPrefs.GetInt("TurnType", 0);
+    }
+
+    public void UpdateTurnType()
+    {
+        int selected = turnType.value;
+        PlayerPrefs.SetInt("TurnType", selected);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadTurnAngle()
+    {
+        turnAngle.value = PlayerPrefs.GetInt("TurnAngle", 2);
+    }
+
+    public void UpdateTurnAngle()
+    {
+        int selected = turnAngle.value;
+        PlayerPrefs.SetInt("TurnAngle", selected);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadTunneling()
+    {
+        bool isEnabled = PlayerPrefs.GetInt("Tunneling", 1) == 1;
+        tunnelingToggle.isOn = isEnabled;
+        tunnelingLabel.text = (isEnabled) ? "Enabled" : "Disabled";
+    }
+
+    public void UpdateTunneling()
+    {
+        bool isEnabled = tunnelingToggle.isOn;
+        tunnelingLabel.text = (isEnabled) ? "Enabled" : "Disabled";
+        int tunneling = isEnabled ? 1 : 0;
+        PlayerPrefs.SetInt("Tunneling", tunneling);
+        PlayerPrefs.Save();
+    }
+
     public void Quit()
     {
         StartCoroutine(FadeAlpha(1f, 0f, 1f));
@@ -112,6 +236,7 @@ public class Menu : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         mainMenuParent.SetActive(true);
+        logoParent.SetActive(true);
         StartCoroutine(FadeAlpha(0f, 1f, 1f));
     }
 
@@ -119,6 +244,7 @@ public class Menu : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         mainMenuParent.SetActive(false);
+        logoParent.SetActive(false);
         bookAnimator.SetBool("CloseApp", true);
         StartCoroutine(QuitApp());
     }
@@ -133,6 +259,10 @@ public class Menu : MonoBehaviour
             Image exitButtonBackground = exitButton.GetComponent<Image>();
 
             float a = Mathf.Lerp(start, end, time / fadeDuration);
+            if (logoImage != null) logoImage.color = new Color(logoImage.color.r, logoImage.color.g, logoImage.color.b, a);
+            if (appName != null) appName.color = new Color(appName.color.r, appName.color.g, appName.color.b, a);
+            if (signature != null) signature.color = new Color(signature.color.r, signature.color.g, signature.color.b, a);
+
             if (learnIcon != null) learnIcon.color = new Color(learnIcon.color.r, learnIcon.color.g, learnIcon.color.b, a);
             if (learnText != null) learnText.color = new Color(learnText.color.r, learnText.color.g, learnText.color.b, a);
             if (learnButtonBackground != null) learnButtonBackground.color = new Color(learnButtonBackground.color.r, learnButtonBackground.color.g, learnButtonBackground.color.b, a);
@@ -148,5 +278,35 @@ public class Menu : MonoBehaviour
             time += Time.deltaTime;
             yield return null;
         }
+    }
+
+    public async void LoadScene(string sceneName)
+    {
+        var scene = SceneManager.LoadSceneAsync(sceneName);
+        scene.allowSceneActivation = false;
+
+        if (sceneName.Equals(museumLevel))
+        {
+            museumMenuParent.SetActive(false);
+        }
+        else if (sceneName.Equals(languageLevel))
+        {
+            languageMenuParent.SetActive(false);
+        }
+        else if (sceneName.Equals(tunnelLevel))
+        {
+            tunnelMenuParent.SetActive(false);
+        }
+
+        loadingParent.SetActive(true);
+
+        do 
+        {
+            loadingSlider.value = scene.progress;
+        }
+        while (scene.progress < 0.9f);
+
+        scene.allowSceneActivation = true;
+        loadingParent.SetActive(false);
     }
 }
