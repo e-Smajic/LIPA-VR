@@ -280,11 +280,8 @@ public class Menu : MonoBehaviour
         }
     }
 
-    public async void LoadScene(string sceneName)
+    public void LoadScene(string sceneName)
     {
-        var scene = SceneManager.LoadSceneAsync(sceneName);
-        scene.allowSceneActivation = false;
-
         if (sceneName.Equals(museumLevel))
         {
             museumMenuParent.SetActive(false);
@@ -300,13 +297,17 @@ public class Menu : MonoBehaviour
 
         loadingParent.SetActive(true);
 
-        do 
-        {
-            loadingSlider.value = scene.progress;
-        }
-        while (scene.progress < 0.9f);
+        StartCoroutine(LoadSceneAsync(sceneName));
+    }
 
-        scene.allowSceneActivation = true;
-        loadingParent.SetActive(false);
+    IEnumerator LoadSceneAsync(string sceneName) {
+        AsyncOperation load = SceneManager.LoadSceneAsync(sceneName);
+
+        while(!load.isDone) 
+        {
+            float progress = Mathf.Clamp01(load.progress / 0.9f);
+            loadingSlider.value = progress;
+            yield return null;
+        }
     }
 }

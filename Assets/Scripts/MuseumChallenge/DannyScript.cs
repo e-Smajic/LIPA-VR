@@ -55,7 +55,10 @@ public class DannyScript : MonoBehaviour
         dannyAnimator.SetBool("IsTalking", false);
         dialogUI.SetActive(false);
         locomotion.SetActive(true);
-        vignette.SetActive(true);
+
+        if (PlayerPrefs.GetInt("Tunneling", 1) == 1)
+            vignette.SetActive(true);
+
         leftHandNFI.enableFarCasting = false;
         rightHandNFI.enableFarCasting = false;
     }
@@ -105,7 +108,8 @@ public class DannyScript : MonoBehaviour
             dialogUI.SetActive(false);
             StopDannyTalk();
             locomotion.SetActive(true);
-            vignette.SetActive(true);
+            if (PlayerPrefs.GetInt("Tunneling", 1) == 1)
+                vignette.SetActive(true);
         }
     }
 }
