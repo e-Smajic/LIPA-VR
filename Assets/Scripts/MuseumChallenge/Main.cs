@@ -20,7 +20,19 @@ public class Main : MonoBehaviour
     public TMP_Text timerText;
     private float timer;
     private bool isCountingTime = false;
-    private bool isLevelStarted = false; 
+    private bool isLevelStarted = false;
+    private bool allCorrect = true; 
+
+    [Header("Danny")]
+    public DannyScript dannyScript;
+
+    [Header("Highscores")]
+    public TMP_Text highscoreText;
+
+    [Header("Sounds")]
+    public AudioSource bgm;
+    public AudioSource victorySound;
+    public AudioSource defeatSound;
 
     void LoadItems()
     {
@@ -48,13 +60,7 @@ public class Main : MonoBehaviour
         {
             Platform newPlatform = child.gameObject.GetComponent<Platform>();
             newPlatform.SetItem(items[count]);
-            //newPlatform.RemoveHideCapsule();
             platforms.Add(newPlatform);
-
-            //Tablet newTablet = newPlatform.transform.GetComponentInChildren<Tablet>();
-            //newTablet.name.text = "Name: " + items[count].name;
-            //newTablet.description.text = "Description:\n" + items[count].description;
-
             count++;
         }
     }
@@ -73,6 +79,23 @@ public class Main : MonoBehaviour
         }
     }
 
+    void LoadHighscores()
+    {
+        string firstName = PlayerPrefs.GetString("MuseumFirstName", "Empty");
+        string secondName = PlayerPrefs.GetString("MuseumSecondName", "Empty");
+        string thirdName = PlayerPrefs.GetString("MuseumThirdName", "Empty");
+
+        string firstTime = PlayerPrefs.GetString("MuseumFirstTime", "");
+        string secondTime = PlayerPrefs.GetString("MuseumSecondTime", "");
+        string thirdTime = PlayerPrefs.GetString("MuseumThirdTime", "");
+
+        string final = "Best times:\n" + firstName + "   " + "(" + firstTime + ")\n"
+                                       + secondName + "   " + "(" + secondTime + ")\n"
+                                       + thirdName + "   " + "(" + thirdTime + ")\n";
+
+        highscoreText.text = final;
+    }
+
     // Fisher-Yates Shuffle
     void Shuffle<T>(List<T> list)
     {
@@ -89,7 +112,6 @@ public class Main : MonoBehaviour
     {
         foreach (Platform p in platforms)
         {
-            Debug.Log("Platform - " + p.IsPlatformCorrect().ToString());
             if (p.IsPlatformCorrect())
             {
                 p.AddCorrectCapsule();
@@ -97,7 +119,26 @@ public class Main : MonoBehaviour
             else
             {
                 p.AddIncorrectCapsule();
+                allCorrect = false;
             }
+        }
+
+        if (allCorrect)
+        {
+            bgm.Stop();
+            victorySound.Play();
+
+            float thirdTimer = PlayerPrefs.GetFloat("MuseumThirdTimer", float.MaxValue);
+            if (timer < thirdTimer)
+            {
+                dannyScript.StartHighscoreDialog(timer, timerText.text);
+            }
+        }
+        else
+        {
+            bgm.Stop();
+            defeatSound.Play();
+            dannyScript.StartDefeatDialog();
         }
     }
 
@@ -131,6 +172,7 @@ public class Main : MonoBehaviour
         LoadItems();
         LoadFlags();
         LoadPlatforms();
+        LoadHighscores();
     }
 
     // Update is called once per frame

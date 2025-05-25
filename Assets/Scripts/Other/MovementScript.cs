@@ -26,17 +26,17 @@ public class MovementScript : MonoBehaviour
         if (moveType == MoveType.STANDARD)
         {
             standardMove.SetActive(true);
-            teleportMove.SetActive(false);
-            leftTeleportInteractor.SetActive(false);
-            rightTeleportInteractor.SetActive(false);
+            //teleportMove.SetActive(false);
+            //leftTeleportInteractor.SetActive(false);
+            //rightTeleportInteractor.SetActive(false);
             teleportArea.GetComponent<TeleportationArea>().enabled = false;
         }
         else
         {
             standardMove.SetActive(false);
-            teleportMove.SetActive(true);
-            leftTeleportInteractor.SetActive(true);
-            rightTeleportInteractor.SetActive(true);
+            //teleportMove.SetActive(true);
+            //leftTeleportInteractor.SetActive(true);
+            //rightTeleportInteractor.SetActive(true);
             teleportArea.GetComponent<TeleportationArea>().enabled = true;
         }
     }

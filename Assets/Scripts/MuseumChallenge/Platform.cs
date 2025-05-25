@@ -19,9 +19,6 @@ public class Platform : MonoBehaviour
         if (current)
         {
             choices.Add(current);
-            Debug.Log(choices.Count);
-            Debug.Log(current.country);
-            Debug.Log(item.country);
         }
     }
 
@@ -32,9 +29,6 @@ public class Platform : MonoBehaviour
         if (current)
         {
             choices.Remove(current);
-            Debug.Log(choices.Count);
-            Debug.Log(current.country);
-            Debug.Log(item.country);
         }
     }
 
@@ -88,7 +82,6 @@ public class Platform : MonoBehaviour
             yield return null;
         }
 
-        // Ensure final alpha is exact
         Color finalColor = mat.color;
         finalColor.a = alpha;
         mat.color = finalColor;
