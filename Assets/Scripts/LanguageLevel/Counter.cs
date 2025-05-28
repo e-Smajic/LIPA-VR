@@ -3,6 +3,7 @@ using UnityEngine;
 public class Counter : MonoBehaviour
 {
     public ShoppingList shoppingList;
+    public MainScript mainScript;
 
     void OnTriggerEnter(Collider other)
     {
@@ -10,8 +11,8 @@ public class Counter : MonoBehaviour
         if (item)
         {
             shoppingList.boughtItems.Add(item.name);
-            Debug.Log("Entered: " + item.name);
-            Debug.Log("Lists are the same: " + shoppingList.IsEverythingBought());
+            mainScript.levelPassed = shoppingList.IsEverythingBought();
+            mainScript.AskFinish();
         }     
     }
 
@@ -21,8 +22,7 @@ public class Counter : MonoBehaviour
         if (item)
         {
             shoppingList.boughtItems.Remove(item.name);
-            Debug.Log("Exited: " + item.name);
-            Debug.Log("Lists are the same: " + shoppingList.IsEverythingBought());
+            mainScript.levelPassed = shoppingList.IsEverythingBought();
         }
     }
 }

@@ -1,6 +1,8 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class TC_Main : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class TC_Main : MonoBehaviour
 
     [Header("Player")]
     public Minecart minecart;
+    public GameObject quad;
 
     [Header("Tunnels")]
     public Transform world;
@@ -25,6 +28,11 @@ public class TC_Main : MonoBehaviour
     public TMP_Text blueAnswerText;
     public TMP_Text greenAnswerText;
     public TMP_Text redAnswerText;
+
+    [Header("BGM")]
+    public AudioSource bgm;
+    public AudioSource victorySound;
+    public AudioSource defeatSound;
 
     void GenerateTunnels()
     {
@@ -96,12 +104,22 @@ public class TC_Main : MonoBehaviour
 
     void EndQuiz()
     {
-        Debug.Log("Congratulations");
         isFinished = true;
+        bgm.Stop();
+        victorySound.Play();
+
         foreach (GameObject c in confetti)
         {
             c.SetActive(true);
         }
+
+        StartCoroutine(LoadSceneAfterDelay(10f));
+    }
+
+    IEnumerator LoadSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("MenuScene");
     }
     
     void Start()
@@ -114,8 +132,8 @@ public class TC_Main : MonoBehaviour
     {
         if (isFinished && minecart.forwardSpeed > 0f && minecart.sideSpeed > 0f)
         {
-            minecart.forwardSpeed -= 0.01f;
-            minecart.sideSpeed -= 0.01f;
+            minecart.forwardSpeed -= 0.05f;
+            minecart.sideSpeed -= 0.05f;
 
             if (minecart.forwardSpeed < 0f)
                 minecart.forwardSpeed = 0f;

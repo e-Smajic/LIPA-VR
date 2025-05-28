@@ -96,7 +96,6 @@ public class TunnelTutorial : MonoBehaviour
 
     public void ChangeTalker()
     {
-        Debug.Log("Talker changed!");
         talkerFlag = !talkerFlag;
     }
 
@@ -104,9 +103,6 @@ public class TunnelTutorial : MonoBehaviour
     {
         if (!tutorialFinished)
         {
-            Debug.Log("TF: " + talkerFlag);
-            Debug.Log("ECL: " + currentEllaLine);
-            Debug.Log("DCL: " + currentDannyLine);
             ellaYesButton.SetActive(false);
             ellaNoButton.SetActive(false);
             ellaContinueButton.SetActive(false);

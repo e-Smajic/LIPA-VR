@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class MainScript : MonoBehaviour
 {
@@ -14,14 +15,27 @@ public class MainScript : MonoBehaviour
     public GameObject yesButton;
     public GameObject noButton;
 
+    [Header("Shopping assistant")]
+    public ShopAssistant shopAssistant;
+    public GameObject shopDialogUI;
+    public TMP_Text shopDialogText;
+    public GameObject shopContinueButton;
+    public GameObject shopYesButton;
+    public GameObject shopNoButton;
+
     [Header("Player")]
     public GameObject locomotion;
     public GameObject vignette;
 
-    // Shopping List:
     [Header("Shopping list")]
     public TMP_Text shoppingListText;
     public ShoppingList shoppingList;
+
+    [Header("BGM")]
+    public AudioSource bgm;
+    public AudioSource victorySound;
+    public AudioSource defeatSound;
+    public AudioSource alarmSound;
 
     // Ella Lines:
     private string[] ellaLines = 
@@ -34,10 +48,16 @@ public class MainScript : MonoBehaviour
     };
     private int currentLine = 0;
 
+    private string[] shopAssistantLines = 
+    {
+        "Brauchen Sie noch etwas?",
+        "Vielen Dank. Tschüss!",
+        "Sind Sie sicher? Überprüfen Sie Ihre Liste noch einmal."
+    };
+
     // Tasks:
     private bool talkedToElla = false;
-    private bool levelFailed = false;
-    private bool levelPassed = false;
+    public bool levelPassed = false;
 
     void Start()
     {
@@ -106,7 +126,11 @@ public class MainScript : MonoBehaviour
                 talkedToElla = true;
                 
                 if (currentLine == 3)
-                    levelFailed = true;
+                {
+                    bgm.Stop();
+                    defeatSound.Play();
+                    StartCoroutine(LoadSceneAfterDelay(7f));
+                }
             }
 
             if (currentLine == 2)
@@ -121,5 +145,62 @@ public class MainScript : MonoBehaviour
             locomotion.SetActive(true);
             vignette.SetActive(true);
         }
+    }
+
+    public void SetAlarmOn()
+    {
+        bgm.Stop();
+        alarmSound.Play();
+        StartCoroutine(LoadSceneAfterDelay(5f));
+    }
+
+    public void AskFinish()
+    {
+        locomotion.SetActive(false);
+        vignette.SetActive(false);
+        shopAssistant.StartTalking();
+        shopDialogUI.SetActive(true);
+        shopDialogText.text = shopAssistantLines[0];
+        shopNoButton.SetActive(true);
+        shopYesButton.SetActive(true);
+        shopContinueButton.SetActive(false);
+    }
+
+    public void AnswerFinishPositive()
+    {
+        locomotion.SetActive(true);
+        vignette.SetActive(true);
+        shopAssistant.StopTalking();
+        shopDialogUI.SetActive(false);
+        shopNoButton.SetActive(false);
+        shopYesButton.SetActive(false);
+        shopContinueButton.SetActive(false);
+    }
+
+    public void AnswerFinishNegative()
+    {
+        shopNoButton.SetActive(false);
+        shopYesButton.SetActive(false);
+
+        if (levelPassed)
+        {
+            shopDialogText.text = shopAssistantLines[1];
+            bgm.Stop();
+            victorySound.Play();
+            StartCoroutine(LoadSceneAfterDelay(10f));
+        }
+        else
+        {
+            shopDialogText.text = shopAssistantLines[2];
+            bgm.Stop();
+            defeatSound.Play();
+            StartCoroutine(LoadSceneAfterDelay(10f));
+        }
+    }
+
+    IEnumerator LoadSceneAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SceneManager.LoadScene("MenuScene");
     }
 }
