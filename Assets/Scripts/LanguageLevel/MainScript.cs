@@ -4,6 +4,7 @@ using TMPro;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class MainScript : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class MainScript : MonoBehaviour
     [Header("Player")]
     public GameObject locomotion;
     public GameObject vignette;
+    public NearFarInteractor leftHandNFI;
+    public NearFarInteractor rightHandNFI;
 
     [Header("Shopping list")]
     public TMP_Text shoppingListText;
@@ -108,6 +111,8 @@ public class MainScript : MonoBehaviour
         ella.StartTalking();
         locomotion.SetActive(false);
         vignette.SetActive(false);
+        leftHandNFI.enableFarCasting = true;
+        rightHandNFI.enableFarCasting = true;
         MoveDialog(0);
     }
 
@@ -144,6 +149,8 @@ public class MainScript : MonoBehaviour
             ella.StopTalking();
             locomotion.SetActive(true);
             vignette.SetActive(true);
+            leftHandNFI.enableFarCasting = false;
+            rightHandNFI.enableFarCasting = false;
         }
     }
 
@@ -158,6 +165,8 @@ public class MainScript : MonoBehaviour
     {
         locomotion.SetActive(false);
         vignette.SetActive(false);
+        leftHandNFI.enableFarCasting = true;
+        rightHandNFI.enableFarCasting = true;
         shopAssistant.StartTalking();
         shopDialogUI.SetActive(true);
         shopDialogText.text = shopAssistantLines[0];
@@ -170,6 +179,8 @@ public class MainScript : MonoBehaviour
     {
         locomotion.SetActive(true);
         vignette.SetActive(true);
+        leftHandNFI.enableFarCasting = false;
+        rightHandNFI.enableFarCasting = false;
         shopAssistant.StopTalking();
         shopDialogUI.SetActive(false);
         shopNoButton.SetActive(false);
