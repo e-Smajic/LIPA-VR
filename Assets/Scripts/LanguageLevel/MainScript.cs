@@ -40,6 +40,10 @@ public class MainScript : MonoBehaviour
     public AudioSource defeatSound;
     public AudioSource alarmSound;
 
+    [Header("Triggers")]
+    public GameObject alarmTrigger;
+    public GameObject counterTrigger;
+
     // Ella Lines:
     private string[] ellaLines = 
     {
@@ -77,7 +81,7 @@ public class MainScript : MonoBehaviour
     {
         shoppingList.GenerateList();
         
-        string listText = "Einkaufsliste:\n\n";
+        string listText = "Ellas Einkaufsliste:\n\n";
         
         foreach(string item in shoppingList.items)
             listText += "- " + item + "\n";
@@ -192,6 +196,8 @@ public class MainScript : MonoBehaviour
     {
         shopNoButton.SetActive(false);
         shopYesButton.SetActive(false);
+        Destroy(alarmTrigger);
+        Destroy(counterTrigger);
 
         if (levelPassed)
         {
