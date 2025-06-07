@@ -18,6 +18,7 @@ public class MovementScript : MonoBehaviour
     private enum TurnType {SNAP, CONTINUOUS};
     private enum Tunneling {OFF, ON};
     private int[] turnAngles = {15, 30, 45};
+    private int[] turnSpeeds = {30, 60, 90, 120};
 
     void LoadMovementType()
     {
@@ -26,17 +27,11 @@ public class MovementScript : MonoBehaviour
         if (moveType == MoveType.STANDARD)
         {
             standardMove.SetActive(true);
-            //teleportMove.SetActive(false);
-            //leftTeleportInteractor.SetActive(false);
-            //rightTeleportInteractor.SetActive(false);
             teleportArea.GetComponent<TeleportationArea>().enabled = false;
         }
         else
         {
             standardMove.SetActive(false);
-            //teleportMove.SetActive(true);
-            //leftTeleportInteractor.SetActive(true);
-            //rightTeleportInteractor.SetActive(true);
             teleportArea.GetComponent<TeleportationArea>().enabled = true;
         }
     }
@@ -63,6 +58,12 @@ public class MovementScript : MonoBehaviour
         turnMove.GetComponent<SnapTurnProvider>().turnAmount = angle;
     }
 
+    void LoadTurnSpeed()
+    {
+        int speed = turnSpeeds[PlayerPrefs.GetInt("TurnSpeed", 1)];
+        turnMove.GetComponent<ContinuousTurnProvider>().turnSpeed = speed;
+    }
+
     void LoadTunneling()
     {
         Tunneling tunneling = (Tunneling) PlayerPrefs.GetInt("Tunneling", 1);
@@ -82,6 +83,7 @@ public class MovementScript : MonoBehaviour
         LoadMovementSpeed();
         LoadTurnType();
         LoadTurnAngle();
+        LoadTurnSpeed();
         LoadTunneling();
     }
 
