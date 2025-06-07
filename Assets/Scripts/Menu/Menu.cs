@@ -48,6 +48,7 @@ public class Menu : MonoBehaviour
     public TMP_Text movementSpeedValue;
     public TMP_Dropdown turnType;
     public TMP_Dropdown turnAngle;
+    public TMP_Dropdown turnSpeed;
     public Toggle tunnelingToggle;
     public Text tunnelingLabel;
 
@@ -71,6 +72,7 @@ public class Menu : MonoBehaviour
         LoadMovementSpeed();
         LoadTurnType();
         LoadTurnAngle();
+        LoadTurnSpeed();
         LoadTunneling();
         StartCoroutine(WaitForBookOpening());
     }
@@ -221,6 +223,18 @@ public class Menu : MonoBehaviour
     {
         int selected = turnAngle.value;
         PlayerPrefs.SetInt("TurnAngle", selected);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadTurnSpeed()
+    {
+        turnSpeed.value = PlayerPrefs.GetInt("TurnSpeed", 1);
+    }
+
+    public void UpdateTurnSpeed()
+    {
+        int selected = turnSpeed.value;
+        PlayerPrefs.SetInt("TurnSpeed", selected);
         PlayerPrefs.Save();
     }
 
