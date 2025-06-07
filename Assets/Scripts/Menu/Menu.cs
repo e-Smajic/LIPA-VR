@@ -23,6 +23,11 @@ public class Menu : MonoBehaviour
     public TMP_Text exitText;
     public Image exitIcon;
 
+    [Header("Help Menu")]
+    public Image helpImage;
+    public GameObject helpButton;
+    private bool isHelpOn = false;
+
     [Header("Learn Menu")]
     public GameObject learnMenuParent;
 
@@ -134,6 +139,25 @@ public class Menu : MonoBehaviour
     {
         mainMenuParent.SetActive(true);
         settingsMenuParent.SetActive(false);
+    }
+
+    public void HelpMenuHandle()
+    {
+        if (isHelpOn)
+        {
+            helpImage.gameObject.SetActive(false);
+            logoImage.gameObject.SetActive(true);
+            appName.gameObject.SetActive(true);
+            signature.gameObject.SetActive(true);
+        }
+        else
+        {
+            helpImage.gameObject.SetActive(true);
+            logoImage.gameObject.SetActive(false);
+            appName.gameObject.SetActive(false);
+            signature.gameObject.SetActive(false);
+        }
+        isHelpOn = !isHelpOn;
     }
 
     public void LoadVolume()
@@ -257,6 +281,7 @@ public class Menu : MonoBehaviour
             Image learnButtonBackground = learnButton.GetComponent<Image>();
             Image settingsButtonBackground = settingsButton.GetComponent<Image>();
             Image exitButtonBackground = exitButton.GetComponent<Image>();
+            Image helpButtonBackground = helpButton.GetComponent<Image>();
 
             float a = Mathf.Lerp(start, end, time / fadeDuration);
             if (logoImage != null) logoImage.color = new Color(logoImage.color.r, logoImage.color.g, logoImage.color.b, a);
@@ -274,6 +299,9 @@ public class Menu : MonoBehaviour
             if (exitIcon != null) exitIcon.color = new Color(exitIcon.color.r, exitIcon.color.g, exitIcon.color.b, a);
             if (exitText != null) exitText.color = new Color(exitText.color.r, exitText.color.g, exitText.color.b, a);
             if (exitButtonBackground != null) exitButtonBackground.color = new Color(exitButtonBackground.color.r, exitButtonBackground.color.g, exitButtonBackground.color.b, a);
+
+            if (helpButtonBackground != null) helpButtonBackground.color = new Color(helpButtonBackground.color.r, helpButtonBackground.color.g, helpButtonBackground.color.b, a);
+            if (helpImage != null) helpImage.color = new Color(helpImage.color.r, helpImage.color.g, helpImage.color.b, a);
 
             time += Time.deltaTime;
             yield return null;
