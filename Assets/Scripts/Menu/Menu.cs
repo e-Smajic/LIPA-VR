@@ -63,6 +63,7 @@ public class Menu : MonoBehaviour
     private string museumLevel = "MuseumScene";
     private string languageLevel = "LanguageLevelScene";
     private string tunnelLevel = "TunnelChallengeScene";
+    private string tunnel2Level = "Tunnel2";
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -332,7 +333,7 @@ public class Menu : MonoBehaviour
         {
             languageMenuParent.SetActive(false);
         }
-        else if (sceneName.Equals(tunnelLevel))
+        else if (sceneName.Equals(tunnelLevel) || sceneName.Equals(tunnel2Level))
         {
             tunnelMenuParent.SetActive(false);
         }
